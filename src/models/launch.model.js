@@ -34,9 +34,17 @@ function createNewLaunch(launch){
     }))
 }
 
+function abortLaunnchById(launchId){
+    const aborted = launches.get(launchId)
+    aborted.launch = false
+    aborted.success = false
+    return aborted
+}
+
 module.exports = {
     getAllLaunches, 
     createNewLaunch,
-    existLaunchWithId
+    existLaunchWithId,
+    abortLaunnchById
 }
      
