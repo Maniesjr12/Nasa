@@ -19,6 +19,11 @@ function getAllLaunches(){
     return Array.from(launches.values())
 }
 
+function existLaunchWithId(launchId){
+    return launches.has(launchId)
+}
+
+
 function createNewLaunch(launch){
     currentFlightNumber++
     launches.set(currentFlightNumber, Object.assign(launch,{
@@ -31,6 +36,7 @@ function createNewLaunch(launch){
 
 module.exports = {
     getAllLaunches, 
-    createNewLaunch
+    createNewLaunch,
+    existLaunchWithId
 }
      

@@ -2,7 +2,7 @@ const {getAllLaunches, createNewLaunch} = require('../../models/launch.model')
 
 function httpGetAllLaunches(req, res){
 
-    res.status(200).json(getAllLaunches)
+    res.status(200).json(getAllLaunches())
 
 }
 
