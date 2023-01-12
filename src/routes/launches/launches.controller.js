@@ -31,14 +31,14 @@ function httpAddNewLaunch(req, res){
 
 function httpAbortLaunch(req, res){
 
-    launchId = req.params
-    if(!existLaunchWithId()){
+    const launchId = Number(req.params.id)
+    if(!existLaunchWithId(launchId)){
         return res.status(404).json({
             error: "Flight not found"
         })
     }
     const aborted = abortLaunnchById(launchId)
-    return res.status(200).json(aborted)
+        return res.status(200).json(aborted)
 
 }
 
