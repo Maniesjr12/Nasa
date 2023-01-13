@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "watch": "npx nodemon src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "test-watch": "jest --watch"
   },
   "keywords": [],
   "author": "",

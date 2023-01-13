@@ -1,10 +1,11 @@
-const request = require('supertest')
-const app = require('../../app')
+const request = require("supertest");
+const app = require("../../app");
 
-
-describe('Test GET /launches', ()=>{
-    test('It should respond with 200 success', async ()=>{
-        const response = await request(app).get('/launches')
-        expect(response.statusCode).toBe(200)
-    })
-})
+describe("Test GET /launches", () => {
+  test("It should respond with 200 success", async () => {
+    const response = await request(app)
+      .get("/launches")
+      .expect(200)
+      .expect("Content-Type", /json/);
+  });
+});
