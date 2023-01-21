@@ -25,13 +25,18 @@ async function saveLaunches(launch) {
   if (!planetName) {
     throw new Error("No planet found");
   }
-  await launchesDB.updateOne({ flightNumber: launch.flightNumber }, launch, {
-    upsert: true,
-  });
+  await launchesDB.findOneAndUpdate(
+    { flightNumber: launch.flightNumber },
+    launch,
+    {
+      upsert: true,
+    }
+  );
 }
 
-function existLaunchWithId(launchId) {
-  return launches.has(launchId);
+async function existLaunchWithId(launchId) {
+  const launchWithId = await launchesDB.findOne({ flightNumber: launchId });
+  return launchWithId;
 }
 
 async function getLaunchNumber() {
@@ -49,13 +54,16 @@ async function scheduleNewLaunch(launch) {
     customers: ["ZTM", "NASA"],
     flightNumber: newFlightNumber,
   });
-  return await saveLaunches(newLaunch);
+  console.log(newLaunch.customers);
+  console.log(newLaunch.success);
+  await saveLaunches(newLaunch);
 }
 
-function abortLaunnchById(launchId) {
-  const aborted = launches.get(launchId);
-  aborted.upcoming = false;
-  aborted.success = false;
+async function abortLaunnchById(launchId) {
+  const aborted = await launchesDB.updateOne(
+    { flightNumber: launchId },
+    { upcoming: false, success: false }
+  );
   return aborted;
 }
 

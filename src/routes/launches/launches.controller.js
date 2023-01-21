@@ -1,6 +1,5 @@
 const {
   getAllLaunches,
-  createNewLaunch,
   existLaunchWithId,
   abortLaunnchById,
   scheduleNewLaunch,
@@ -36,14 +35,20 @@ async function httpAddNewLaunch(req, res) {
   res.status(201).json(launch);
 }
 
-function httpAbortLaunch(req, res) {
+async function httpAbortLaunch(req, res) {
   const launchId = Number(req.params.id);
-  if (!existLaunchWithId(launchId)) {
+  const existLaunch = await existLaunchWithId(launchId);
+  if (!existLaunch) {
     return res.status(404).json({
       error: "Flight not found",
     });
   }
-  const aborted = abortLaunnchById(launchId);
+  const aborted = await abortLaunnchById(launchId);
+  if (!aborted) {
+    return res.status(400).json({
+      error: "Launch not aborted",
+    });
+  }
   return res.status(200).json(aborted);
 }
 
