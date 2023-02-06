@@ -46,9 +46,9 @@ async function getLaunchNumber() {
   }
   return latestLanuch.flightNumber;
 }
-async function scheduleNewLaunch(launch) {
+async function scheduleNewLaunch(launchData) {
   const newFlightNumber = (await getLaunchNumber()) + 1;
-  const newLaunch = Object.assign(launch, {
+  const newLaunch = Object.assign(launchData, {
     success: true,
     upcoming: true,
     customers: ["ZTM", "NASA"],

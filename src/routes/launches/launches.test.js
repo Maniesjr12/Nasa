@@ -8,14 +8,14 @@ const {
 describe("Testing launch API", () => {
   beforeAll(async () => {
     await mongooseConnect();
-  });
+  }, 10000);
   afterAll(async () => {
     await mongooseDisconnect();
-  });
+  }, 20000);
   describe("Test GET /launches", () => {
     test("It should respond with 200 success", async () => {
       const response = await request(app)
-        .get("/launches")
+        .get("/v1/launches")
         .expect(200)
         .expect("Content-Type", /json/);
     });
@@ -25,24 +25,24 @@ describe("Testing launch API", () => {
     const objectWitoutDate = {
       mission: "Newone123",
       rocket: "ZTMISS6",
-      target: "Kepler-1410 b",
+      target: "Kepler-62 f",
     };
     const objectWithInvalidDate = {
       mission: "Newone123",
       rocket: "ZTMISS6",
-      target: "Kepler-1410 b",
+      target: "Kepler-62 f",
       launchDate: "januamand34ry, 12 2023",
     };
 
     const objectWithDate = {
       mission: "Newone123",
       rocket: "ZTMISS6",
-      target: "Kepler-1410 b",
+      target: "Kepler-62 f",
       launchDate: "january, 12 2023",
     };
     test("It should respond with 201 success", async () => {
       const response = await request(app)
-        .post("/launches")
+        .post("/v1/launches")
         .send(objectWithDate)
         .expect(201)
         .expect("Content-Type", /json/);
@@ -54,7 +54,7 @@ describe("Testing launch API", () => {
     });
     test("It should catch missing required", async () => {
       const response = await request(app)
-        .post("/launches")
+        .post("/v1/launches")
         .send(objectWitoutDate)
         .expect(400)
         .expect("Content-Type", /json/);
@@ -66,7 +66,7 @@ describe("Testing launch API", () => {
 
     test("it should catch invalid dates", async () => {
       const response = await request(app)
-        .post("/launches")
+        .post("/v1/launches")
         .send(objectWithInvalidDate)
         .expect(400)
         .expect("Content-Type", /json/);

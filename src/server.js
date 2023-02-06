@@ -7,9 +7,10 @@ const app = require("./app");
 const { loadPlanetData } = require("./models/planets.models");
 const { mongooseConnect } = require("./services/mongodb");
 
+const server = http.createServer(app);
+
 async function loadServer() {
   await mongooseConnect();
-  const server = http.createServer(app);
   await loadPlanetData();
 
   server.listen(PORT, () => {
