@@ -1,17 +1,17 @@
 const launchesDB = require("./launches.schema");
 const planetsSchema = require("./planets.schema");
-
+const axios = require("axios");
 let DEFAUT_FLIGHT_NUMBER = 100;
 
 const launch = {
-  flightNumber: 100,
-  mission: "Kepler Exploration X",
-  rocket: "Explorer IS1",
-  launchDate: new Date("December 27, 2025"),
-  target: "Kepler-1410 b",
-  customers: ["ZTM", "NASA"],
-  upcoming: true,
-  success: true,
+  flightNumber: 100, //flight_number
+  mission: "Kepler Exploration X", //name
+  rocket: "Explorer IS1", //rocket.name
+  launchDate: new Date("December 27, 2025"), //date.local
+  target: "Kepler-1410 b", //not applicable
+  customers: ["ZTM", "NASA"], //payload.customers foreach payload
+  upcoming: true, //upcoming
+  success: true, //success
 };
 
 saveLaunches(launch);
@@ -54,9 +54,29 @@ async function scheduleNewLaunch(launchData) {
     customers: ["ZTM", "NASA"],
     flightNumber: newFlightNumber,
   });
-  console.log(newLaunch.customers);
-  console.log(newLaunch.success);
   await saveLaunches(newLaunch);
+}
+
+const SPACEX_API_URL = "https://api.spacexdata.com/v4/launches/query";
+
+async function getLauchesData() {
+  const response = await axios.post(SPACEX_API_URL, {
+    query: {},
+    options: {
+      populate: [
+        {
+          path: "rocket",
+          select: {
+            name: 1,
+          },
+          path: "payloads",
+          select: {
+            customers: 1,
+          },
+        },
+      ],
+    },
+  });
 }
 
 async function abortLaunnchById(launchId) {
@@ -69,6 +89,7 @@ async function abortLaunnchById(launchId) {
 
 module.exports = {
   getAllLaunches,
+  getLauchesData,
   existLaunchWithId,
   scheduleNewLaunch,
   abortLaunnchById,
