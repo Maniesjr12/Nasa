@@ -1,5 +1,7 @@
 const PORT = 8000 || process.env.PORT;
 
+require("dotenv").config();
+
 //   "mongodb+srv://<username>:<password>@cluster0.afqpx.mongodb.net/?retryWrites=true&w=majority"
 const mongoose = require("mongoose");
 const http = require("http");

@@ -3,21 +3,12 @@ const planetsSchema = require("./planets.schema");
 const axios = require("axios");
 let DEFAUT_FLIGHT_NUMBER = 100;
 
-const launch = {
-  flightNumber: 100, //flight_number
-  mission: "Kepler Exploration X", //name
-  rocket: "Explorer IS1", //rocket.name
-  launchDate: new Date("December 27, 2025"), //date.local
-  target: "Kepler-1410 b", //not applicable
-  customers: ["ZTM", "NASA"], //payload.customers foreach payload
-  upcoming: true, //upcoming
-  success: true, //success
-};
-
-saveLaunches(launch);
-
-async function getAllLaunches() {
-  return await launchesDB.find({}, { _id: 0, __v: 0 });
+async function getAllLaunches(skip, limit) {
+  return await launchesDB
+    .find({}, { _id: 0, __v: 0 })
+    .sort({ flightNumber: 1 })
+    .skip(skip)
+    .limit(limit);
 }
 
 async function saveLaunches(launch) {
