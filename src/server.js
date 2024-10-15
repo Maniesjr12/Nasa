@@ -1,4 +1,4 @@
-const PORT = 8000 || process.env.PORT;
+const PORT = 500 || process.env.PORT;
 
 require("dotenv").config();
 
